@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>warmup_project</name>
+  <version>0.0.0</version>
+  <description>Warmup project for Comprobo20</description>
+  <maintainer email="aphung@olin.edu">Amy Phung</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>geometry_msgs</depend>
+  <depend>rospy</depend>
+  <depend>rosbag</depend>
+  <depend>sensor_msgs</depend>
+  <depend>std_msgs</depend>
+</package>
