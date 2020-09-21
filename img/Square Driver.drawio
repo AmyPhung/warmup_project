@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2020-09-21T17:00:09.664Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36" etag="tSpUkn8P7asDPa2xgg4r" version="13.7.3" type="github">
+<mxfile host="app.diagrams.net" modified="2020-09-21T17:19:37.090Z" agent="5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36" etag="oJd7W_0Xe0uvggIqd8ck" version="13.7.3" type="github">
   <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
-    <mxGraphModel dx="378" dy="680" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1258" dy="694" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
@@ -40,8 +40,25 @@
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-11" value="Exit Node" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="155" y="410" width="120" height="40" as="geometry" />
         </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-19" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="WIyWlLk6GJQsqaUBKTNV-12" target="2maoNU9S7KrfHmM78yVB-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="350" />
+              <mxPoint x="360" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
         <mxCell id="WIyWlLk6GJQsqaUBKTNV-12" value="Turn to face next waypoint" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="320" y="310" width="120" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-45" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-0">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="480" y="100" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="460" y="210" />
+              <mxPoint x="460" y="100" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="2maoNU9S7KrfHmM78yVB-0" value="Drive towards next waypoint" style="rounded=1;whiteSpace=wrap;html=1;fontSize=12;glass=0;strokeWidth=1;shadow=0;fillColor=#1ba1e2;strokeColor=#006EAF;fontColor=#ffffff;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
           <mxGeometry x="320" y="190" width="120" height="40" as="geometry" />
@@ -52,6 +69,106 @@
             <mxPoint x="225" y="260" as="sourcePoint" />
             <mxPoint x="225" y="300" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-20" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-6" target="2maoNU9S7KrfHmM78yVB-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-6" value="Compute difference between current heading and desired heading" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="380" y="360" width="256" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-27" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-29" target="2maoNU9S7KrfHmM78yVB-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="360" y="600" />
+              <mxPoint x="360" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-28" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-7">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="510.0344827586207" y="590" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-7" value="Multiply difference by a proportional constant to compute angular command" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="382" y="530" width="256" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-16" target="2maoNU9S7KrfHmM78yVB-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-22" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-16" target="2maoNU9S7KrfHmM78yVB-6">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="510" y="460" />
+              <mxPoint x="656" y="460" />
+              <mxPoint x="656" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-24" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2maoNU9S7KrfHmM78yVB-22">
+          <mxGeometry x="0.197" y="-1" relative="1" as="geometry">
+            <mxPoint x="13.020000000000001" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-16" value="Is the difference below &lt;br&gt;a specified threshold?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;fillColor=#008a00;strokeColor=#005700;fontColor=#ffffff;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="410" y="420" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-25" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="650.0033333333333" y="470" as="geometry">
+            <mxPoint x="-127" y="44" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-29" value="Send command to robot" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="440" y="590" width="146" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-34" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-35" target="2maoNU9S7KrfHmM78yVB-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-35" value="Compute distance between current position and desired position" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="480" y="80" width="256" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-36" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=block;endFill=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-44" target="2maoNU9S7KrfHmM78yVB-35">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="460" y="320" />
+              <mxPoint x="460" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-37" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-38">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="610.0344827586207" y="310" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-38" value="Multiply distance by a proportional constant to compute linear command" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="482" y="250" width="256" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-39" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-42" target="2maoNU9S7KrfHmM78yVB-38">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-40" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=1;entryY=0.5;entryDx=0;entryDy=0;endArrow=block;endFill=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1" source="2maoNU9S7KrfHmM78yVB-42" target="2maoNU9S7KrfHmM78yVB-35">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="610" y="180" />
+              <mxPoint x="756" y="180" />
+              <mxPoint x="756" y="100" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-41" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2maoNU9S7KrfHmM78yVB-40">
+          <mxGeometry x="0.197" y="-1" relative="1" as="geometry">
+            <mxPoint x="13.020000000000001" y="-11" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-42" value="Is the distance below &lt;br&gt;a specified threshold?" style="rhombus;whiteSpace=wrap;html=1;shadow=0;fontFamily=Helvetica;fontSize=12;align=center;strokeWidth=1;spacing=6;spacingTop=-4;fillColor=#008a00;strokeColor=#005700;fontColor=#ffffff;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="510" y="140" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-43" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="750.0033333333333" y="190" as="geometry">
+            <mxPoint x="-127" y="44" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="2maoNU9S7KrfHmM78yVB-44" value="Send command to robot" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="540" y="310" width="146" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
