@@ -14,6 +14,8 @@ At first, an issue I ran into was the input appeared to be significantly delayed
 
 ## Square Driver
 <!-- TODO: Create visualization of square -->
+![drive square demo](img/drive_square.gif)
+
 Used `/odom`, generalized p2p navigation with proportional control. Position tolerance during waypoint following
 
 For each behavior, describe the problem at a high-level. Include any relevant diagrams that help explain your approach.  Discuss your strategy at a high-level and include any tricky decisions that had to be made to realize a successful implementation.

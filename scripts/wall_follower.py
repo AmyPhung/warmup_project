@@ -52,7 +52,7 @@ class WallFollower():
         rate = rospy.get_param('~rate', 10)
         self.update_rate = rospy.Rate(rate)
 
-        self.forward_vel =  rospy.get_param('~forward_vel', 0.1)
+        self.forward_vel =  rospy.get_param('~forward_vel', 0.2)
         self.follow_dist =  rospy.get_param('~follow_dist', 0.5)
         self.visualize =  rospy.get_param('~visualize', True)
 
