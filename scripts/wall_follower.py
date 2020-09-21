@@ -4,6 +4,8 @@ import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import PointCloud2, LaserScan
 from laser_line_extraction.msg import LineSegmentList
+from warmup_project.cfg import WallApproachConfig
+from dynamic_reconfigure.server import Server
 import numpy as np
 import math
 
@@ -52,15 +54,29 @@ class WallFollower():
         rate = rospy.get_param('~rate', 10)
         self.update_rate = rospy.Rate(rate)
 
+        # Load ROS params
         self.forward_vel =  rospy.get_param('~forward_vel', 0.2)
         self.follow_dist =  rospy.get_param('~follow_dist', 0.5)
+        self.kp1 =  rospy.get_param('~kp1', 0.4)
+        self.kp2 =  rospy.get_param('~kp2', 0.4)
         self.visualize =  rospy.get_param('~visualize', True)
 
+        # Start Dynamic Reconfigure Server
+        srv = Server(WallApproachConfig, self.paramCB)
+
+        # Publishers/subscribers
         self.wall_detection_sub = rospy.Subscriber('/line_segments', LineSegmentList,
             self.wallDetectionCB, queue_size=1)
         self.wall_detection_msg = LineSegmentList()
 
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
+
+    def paramCB(self, config, level):
+        self.forward_vel =  config.forward_vel
+        self.follow_dist =  config.follow_dist
+        self.kp1 =  config.kp1
+        self.kp2 =  config.kp2
+        return config
 
     def wallDetectionCB(self, msg):
         self.wall_detection_msg = msg
@@ -86,7 +102,6 @@ class WallFollower():
         distances = lineseg_dists((0,0), starts, ends)
 
         idx = np.argmin(distances)
-        print(type(starts[idx]))
         return starts[idx], ends[idx]
 
     def computeAngularCommand(self, wall_start, wall_end):
@@ -98,7 +113,7 @@ class WallFollower():
         heading_offset = min(abs(heading_offset_1), (heading_offset_2))
 
         # TODO: Make PID
-        ang_cmd = heading_offset * 0.4
+        ang_cmd = heading_offset * self.kp1
         return ang_cmd
 
 

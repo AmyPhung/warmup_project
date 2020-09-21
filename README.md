@@ -25,5 +25,9 @@ What if any challenges did you face along the way?
 What would you do to improve your project if you had more time?
 What are the key takeaways from this assignment for future robotic programming projects? For each takeaway, provide a sentence or two of elaboration.
 
+
+## Wall Follower
+![wall follow demo](img/wall_follow4.gif)
+
 # TODO:
 - implement wall detection
