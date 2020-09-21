@@ -4,6 +4,8 @@ project(warmup_project)
 find_package(catkin REQUIRED
   COMPONENTS
     geometry_msgs
+    laser_geometry
+    laser_line_extraction
     nav_msgs
     rospy
     rosbag
