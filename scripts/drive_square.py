@@ -1,5 +1,17 @@
 #!/usr/bin/env python
 
+"""
+Drive Square
+
+Drives the robot in a 1m X 1m square. Uses a generalized waypoint nagivation
+implementation in which the robot drives to each waypoint, turns to face the
+next waypoint, then drives towards the waypoint. Uses a proportional control
+loop to smoothly adjust both turn and drive commands. Uses /odom for odometry
+
+ROS Parameters:
+- rate = Node update rate
+"""
+
 import math
 import numpy as np
 import rospy

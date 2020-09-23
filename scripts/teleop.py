@@ -1,5 +1,14 @@
 #!/usr/bin/env python
+"""
+Joystick Teleop
 
+Uses a usb joystick for teleoperation. Publishes command to /cmd_vel topic.
+Designed for and tested on an Xbox 360 controller
+
+ROS Parameters:
+- x_threshold = joystick deadzone for x
+- y_threshold = joystick deadzone for y
+"""
 import inputs
 import rospy
 from geometry_msgs.msg import Twist

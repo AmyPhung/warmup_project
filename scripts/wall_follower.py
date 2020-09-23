@@ -1,5 +1,23 @@
 #!/usr/bin/env python
+"""
+Wall Follower
 
+Commands robot to drive parallel to the nearest wall. Uses the package
+laser_line_extraction to detect line segments in a laser scan. Also takes
+parameters from a ROS dynamic reconfigure server to tune parameters in
+real time.
+
+ROS Parameters:
+- rate = update rate of node
+- forward_vel = Constant velocity to drive at
+- follow_dist = (currently unused) - plan to use this to set distance from wall
+- kp1 = Proportional control to keep parallel heading to wall
+- kp2 = (currently unusued) - plan to use this to adjust distance from wall
+
+TODO:
++ reimplement line segment detection
++ incorporate distance from wall parameter
+"""
 import rospy
 from geometry_msgs.msg import Twist
 from sensor_msgs.msg import PointCloud2, LaserScan
@@ -59,7 +77,6 @@ class WallFollower():
         self.follow_dist =  rospy.get_param('~follow_dist', 0.5)
         self.kp1 =  rospy.get_param('~kp1', 0.4)
         self.kp2 =  rospy.get_param('~kp2', 0.4)
-        self.visualize =  rospy.get_param('~visualize', True)
 
         # Start Dynamic Reconfigure Server
         srv = Server(WallApproachConfig, self.paramCB)
