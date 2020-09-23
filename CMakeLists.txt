@@ -8,6 +8,7 @@ find_package(catkin REQUIRED
     laser_geometry
     laser_line_extraction
     nav_msgs
+    ros_numpy
     rospy
     rosbag
     sensor_msgs

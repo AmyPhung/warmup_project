@@ -4,6 +4,7 @@ This is the repo for the 2020 CompRobo warmup project
 # Dependencies
 + https://github.com/kam3k/laser_line_extraction
 + python inputs package
++ https://github.com/eric-wieser/ros_numpy
 
 ## Robot Teleop
 For the robot teleop, I used the [inputs](https://github.com/zeth/inputs) python package to read input from a joystick. Every button press and axis movement triggered an "event," which was regularly checked for in the node's main loop.

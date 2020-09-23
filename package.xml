@@ -11,6 +11,7 @@
   <depend>laser_geometry</depend>
   <depend>laser_line_extraction</depend>
   <depend>nav_msgs</depend>
+  <depend>ros_numpy</depend>
   <depend>rospy</depend>
   <depend>rosbag</depend>
   <depend>sensor_msgs</depend>
