@@ -37,7 +37,19 @@ What are the key takeaways from this assignment for future robotic programming p
 
 ## Wall Follower
 ![wall follow demo](img/wall_follow4.gif)
++ External package to compute line segments
++ compute distance to nearest line segment
++ drive towards nearest line segment
++ compute heading difference between robot and line segment
++ put into proportional loop
 
 # TODO:
 - implement wall detection
 - writeup
+
+## Person Follower
+![person follow demo](img/person_follow.gif)
++ Uses DBSCAN clustering to cluster 2D data from lidar
++ Computes nearest cluster
++ Uses proportional control to control position and velocity when approaching person 
++ attempted to use convex hull to compute area of object, but this implementation was brittle due to "lidar shadows"
