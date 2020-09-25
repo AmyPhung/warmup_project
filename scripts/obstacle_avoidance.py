@@ -10,8 +10,8 @@ Based on: https://github.com/goktug97/DynamicWindowApproach
 import rospy
 import ros_numpy
 from nav_msgs.msg import Odometry
-from geometry_msgs.msg import Twist
-from tf.transformations import euler_from_quaternion
+from geometry_msgs.msg import Twist, Pose, PoseStamped
+from tf.transformations import euler_from_quaternion, quaternion_from_euler
 from sensor_msgs.msg import PointCloud2, LaserScan
 from warmup_project.cfg import ObstacleAvoidanceConfig
 from dynamic_reconfigure.server import Server
@@ -55,8 +55,8 @@ class DynamicWindow():
 
 # Path planner ------------------------------------------------------
 class PathPlanner():
-    def __init__(self):
-        pass
+    def __init__(self, config):
+        self.config = config
 
     def calculateVelocityCost(self):
         pass
@@ -70,18 +70,61 @@ class PathPlanner():
     def createDynamicWindow(self, twist, config):
         dw = DynamicWindow()
 
-        minV = max(config.minSpeed, velocity.linearVelocity - config.maxAccel * config.dt)
-        maxV = min(config.maxSpeed, velocity.linearVelocity + config.maxAccel * config.dt)
-        minW = max(-config.maxYawrate, velocity.angularVelocity - config.maxdYawrate * config.dt);
-        maxW = max(config.maxYawrate, velocity.angularVelocity + config.maxdYawrate * config.dt)
+        minV = max(config.minSpeed, twist.linear.x - config.maxAccel * config.dt)
+        maxV = min(config.maxSpeed, twist.linear.x + config.maxAccel * config.dt)
+        minW = max(-config.maxYawrate, twist.angular.z - config.maxdYawrate * config.dt);
+        maxW = max(config.maxYawrate, twist.angular.z + config.maxdYawrate * config.dt)
 
-        dw.nPossibleV = (maxV - minV) / config.velocityResolution
-        dw.nPossibleW = (maxW - minW) / config.yawrateResolution
+        print("AFDSFS")
+        print(minV)
+        print(maxV)
+        print(minW)
+        print(maxW)
+
+        dw.nPossibleV = int((maxV - minV) / config.velocityResolution)
+        dw.nPossibleW = int((maxW - minW) / config.yawrateResolution)
+        print(dw.nPossibleV)
+        print(dw.nPossibleW)
         return dw
 
+    def projectMotion(self, pose, twist, dt):
+        """ Predict where robot will be in the next timestep """
+        new_pose = Pose()
+        eul_yaw = euler_from_quaternion([pose.orientation.x,
+                                         pose.orientation.y,
+                                         pose.orientation.z,
+                                         pose.orientation.w])
+        yaw = eul_yaw[2] + twist.angular.z * dt;
+        quat = quaternion_from_euler(0,0,yaw)
+        new_pose.orientation.x = quat[0]
+        new_pose.orientation.y = quat[1]
+        new_pose.orientation.z = quat[2]
+        new_pose.orientation.w = quat[3]
+
+        new_pose.position.x = pose.position.x + twist.linear.x * math.cos(yaw) * dt;
+        new_pose.position.y = pose.position.y + twist.linear.y * math.sin(yaw) * dt;
+        return new_pose;
 
     def computeTwistCommand(self, pose, twist, goal, pcl, config):
-        dw = createDynamicWindow(twist, config)
+        """ Compute best twist command with the dynamic window implementation
+
+        Args:
+            pose (geometry_msgs/Pose): Current robot pose in /odom
+            twist (geometry_msgs/Twist): Current twist from /odom
+            goal (geometry_msgs/Pose): Goal pose in /odom
+            pcl (sensor_msgs/PointCloud2): PCL generated from laser in robot frame
+            config (Config): Settings to use for computation
+        """
+        print("Here!")
+
+
+        dw = self.createDynamicWindow(twist, config)
+        print(dw.nPossibleV)
+        for i in range(dw.nPossibleV):
+            for j in range(dw.nPossibleW):
+                pPose = self.projectMotion(pose, twist, config.dt)
+                print(pPose)
+                # return pPose
 
 
 class ObstacleAvoidance():
@@ -96,8 +139,13 @@ class ObstacleAvoidance():
         srv = Server(ObstacleAvoidanceConfig, self.paramCB)
 
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
+        self.projection_pub = rospy.Publisher("/projected_pose", Pose, queue_size=10)
         self.odom_sub = rospy.Subscriber("/odom", Odometry, self.odomCB)
         self.odom_msg = Odometry()
+        self.goal_sub = rospy.Subscriber("/move_base_simple/goal", PoseStamped, self.goalCB)
+        self.goal_msg = Pose()
+        self.laser_sub = rospy.Subscriber("/scan", LaserScan, self.laserCB)
+        self.laser_msg = LaserScan()
 
         robot_clearance = Rect()
         # Assume robot is a 40x40cm box with the center at 0,0
@@ -110,16 +158,22 @@ class ObstacleAvoidance():
         self.config.maxSpeed = rospy.get_param('~maxSpeed', 1.0)
         self.config.minSpeed = rospy.get_param('~minSpeed', -1.0)
         self.config.maxYawrate = rospy.get_param('~maxYawrate', 3.0)
-        self.config.maxAccel = rospy.get_param('~maxAccel', 0.3)
-        self.config.maxdYawrate = rospy.get_param('~maxdYawrate', 1.0)
-        self.config.velocityResolution = rospy.get_param('~velocityResolution', 0.2)
-        self.config.yawrateResolution = rospy.get_param('~yawrateResolution', 0.2)
+        self.config.maxAccel = rospy.get_param('~maxAccel', 3)
+        self.config.maxdYawrate = rospy.get_param('~maxdYawrate', 6.0)
+        self.config.velocityResolution = rospy.get_param('~velocityResolution', 0.05)
+        self.config.yawrateResolution = rospy.get_param('~yawrateResolution', 0.05)
         self.config.dt = rospy.get_param('~dt', 0.1)
         self.config.predictTime = rospy.get_param('~predictTime', 3.0)
         self.config.heading = rospy.get_param('~heading', 0.15)
         self.config.clearance = rospy.get_param('~clearance', 1.0)
         self.config.velocity = rospy.get_param('~velocity', 1.0)
         self.config.base = robot_clearance
+
+        # Path planner is used to compute next command
+        self.path_planner = PathPlanner(self.config)
+
+        # Used to create pointcloud from laser data
+        self.lp = lg.LaserProjection()
 
         rospy.loginfo("Obstacle avoidance node setup complete!")
         self.ready = True
@@ -140,16 +194,32 @@ class ObstacleAvoidance():
         self.config.heading = config.heading
         self.config.clearance = config.clearance
         self.config.velocity = config.velocity
+
+        # Update path planner
+        self.path_planner.config = self.config
         return config
 
     def odomCB(self, msg):
         self.odom_msg = msg
 
+    def goalCB(self, msg):
+        self.goal_msg = msg
+
+    def laserCB(self, msg):
+        self.laser_msg = msg
+
     def run(self):
         while not rospy.is_shutdown():
             # self.twist_pub.publish(twist_cmd)
-            print(self.odom_msg)
-            print(self.config.dt)
+            # print(self.odom_msg)
+            # print(self.config.dt)
+            pcl_msg = self.lp.projectLaser(self.laser_msg)
+
+            twist_cmd = self.path_planner.computeTwistCommand(
+                self.odom_msg.pose.pose, self.odom_msg.twist.twist,
+                self.goal_msg, pcl_msg, self.config)
+
+            # self.projection_pub.publish(pPose)
             self.update_rate.sleep()
 
 if __name__ == "__main__":
