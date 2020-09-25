@@ -17,4 +17,5 @@ find_package(catkin REQUIRED
 
 generate_dynamic_reconfigure_options(
   cfg/WallApproach.cfg
+  cfg/ObstacleAvoidance.cfg
 )

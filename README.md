@@ -46,10 +46,11 @@ What are the key takeaways from this assignment for future robotic programming p
 # TODO:
 - implement wall detection
 - writeup
+- Create visualizations and rosbag files for implementations
 
 ## Person Follower
 ![person follow demo](img/person_follow.gif)
 + Uses DBSCAN clustering to cluster 2D data from lidar
 + Computes nearest cluster
-+ Uses proportional control to control position and velocity when approaching person 
++ Uses proportional control to control position and velocity when approaching person
 + attempted to use convex hull to compute area of object, but this implementation was brittle due to "lidar shadows"
