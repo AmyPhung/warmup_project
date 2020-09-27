@@ -1,0 +1,10 @@
+<launch>
+  <!-- Obstacle Avoidance Node -->
+  <node type="obstacle_avoidance.py" name="obstacle_avoidance" pkg="warmup_project"
+    output="screen"/>
+
+  <!-- RVIZ Node -->
+  <node type="rviz" name="rviz" pkg="rviz"
+    args="-d $(find warmup_project)/rviz/obstacle_avoidance_config.rviz" />
+
+</launch>
