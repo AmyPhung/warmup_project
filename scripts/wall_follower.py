@@ -73,13 +73,15 @@ class WallFollower():
         self.update_rate = rospy.Rate(rate)
 
         # Load ROS params
+        self.debug =  rospy.get_param('~debug', False)
         self.forward_vel =  rospy.get_param('~forward_vel', 0.2)
         self.follow_dist =  rospy.get_param('~follow_dist', 0.5)
         self.kp1 =  rospy.get_param('~kp1', 0.4)
         self.kp2 =  rospy.get_param('~kp2', 0.4)
 
         # Start Dynamic Reconfigure Server
-        srv = Server(WallApproachConfig, self.paramCB)
+        if self.debug:
+            srv = Server(WallApproachConfig, self.paramCB)
 
         # Publishers/subscribers
         self.wall_detection_sub = rospy.Subscriber('/line_segments', LineSegmentList,
@@ -89,10 +91,11 @@ class WallFollower():
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=1)
 
     def paramCB(self, config, level):
-        self.forward_vel =  config.forward_vel
-        self.follow_dist =  config.follow_dist
-        self.kp1 =  config.kp1
-        self.kp2 =  config.kp2
+        if hasattr(config, 'forward_vel'):
+            self.forward_vel =  config.forward_vel
+            self.follow_dist =  config.follow_dist
+            self.kp1 =  config.kp1
+            self.kp2 =  config.kp2
         return config
 
     def wallDetectionCB(self, msg):
