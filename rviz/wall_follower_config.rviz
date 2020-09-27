@@ -68,9 +68,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: -999999
+      Max Intensity: 0
       Min Color: 0; 0; 0
-      Min Intensity: 999999
+      Min Intensity: 0
       Name: LaserScan
       Position Transformer: XYZ
       Queue Size: 10
@@ -195,14 +195,14 @@ Visualization Manager:
       Marker Topic: /line_segment_markerarray
       Name: MarkerArray
       Namespaces:
-        {}
+        wall_detection: true
       Queue Size: 100
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: odom
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -264,5 +264,5 @@ Window Geometry:
   Views:
     collapsed: true
   Width: 908
-  X: 67
-  Y: 449
+  X: 1814
+  Y: 355

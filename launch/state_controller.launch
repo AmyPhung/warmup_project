@@ -25,9 +25,6 @@
       output="screen"/>
   </group>
 
-  <node type="rviz_markers.py" name="rviz_markers" pkg="warmup_project"
-    output="screen"/>
-
   <node type="state_controller.py" name="state_controller" pkg="warmup_project"
     output="screen"/>
 </launch>
