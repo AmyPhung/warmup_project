@@ -38,6 +38,15 @@ class JoystickTeleop():
             raise Exception("Couldn't find any Gamepads!")
         else:
             rospy.loginfo("Found %s", self.pads)
+            rospy.loginfo("Starting teleop! \n" + \
+                          "Keybindings: \n" + \
+                          "- A: Activate \n" + \
+                          "- B: E-stop \n" + \
+                          "- DPad Up/Down: Change State\n" + \
+                          "States: \n" + \
+                          "- 0: Teleop \n" + \
+                          "- 1: Wall Follow \n" + \
+                          "- 2: Person Follow")
 
         self.curr_x_input = 0
         self.curr_y_input = 0
