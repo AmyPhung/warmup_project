@@ -1,15 +1,15 @@
 <launch>
   <!-- Obstacle Avoidance Node -->
-  <node type="obstacle_avoidance.py" name="obstacle_avoidance" pkg="warmup_project"
+  <node type="obstacle_avoidance_dwa.py" name="obstacle_avoidance_dwa" pkg="warmup_project"
     output="screen"/>
 
   <!-- RVIZ Node -->
   <node type="rviz" name="rviz" pkg="rviz"
-    args="-d $(find warmup_project)/rviz/obstacle_avoidance_config.rviz" />
+    args="-d $(find warmup_project)/rviz/obstacle_avoidance_dwa_config.rviz" />
 
   <!-- Dynamic Reconfigure -->
   <node name = "rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui"
     respawn = "false" output = "screen"
-    args = "--perspective-file $(find warmup_project)/rqt_config/obstacle_avoidance.perspective"/>
+    args = "--perspective-file $(find warmup_project)/rqt_config/obstacle_avoidance_dwa.perspective"/>
 
 </launch>

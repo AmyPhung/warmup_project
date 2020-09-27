@@ -4,6 +4,10 @@
 Obstacle avoidance using the dynamic window approach
 
 Based on: https://github.com/goktug97/DynamicWindowApproach
+
+
+TODO:
+Figure out transforms, visualize window, look back at source code
 """
 
 # ROS Imports
@@ -152,8 +156,8 @@ class PathPlanner():
         new_pose.orientation.z = quat[2]
         new_pose.orientation.w = quat[3]
 
-        new_pose.position.x = pose.position.x + twist.linear.x * math.cos(yaw) * dt;
-        new_pose.position.y = pose.position.y + twist.linear.y * math.sin(yaw) * dt;
+        new_pose.position.x = pose.position.x + twist.linear.x * dt#* math.cos(yaw) * dt;
+        new_pose.position.y = pose.position.y + twist.linear.y * dt#* math.sin(yaw) * dt;
         return new_pose;
 
     def computeTwistCommand(self, pose, twist, goal, pcl, config):
@@ -299,15 +303,14 @@ class ObstacleAvoidance():
 
             # Need to convert odom linear twist message to odom frame
             # (defaults to robot frame)
-            quat_vec = [self.odom_msg.pose.pose.orientation.w,
-                    self.odom_msg.pose.pose.orientation.x,
-                    self.odom_msg.pose.pose.orientation.y,
-                    self.odom_msg.pose.pose.orientation.z]
+            quat_vec = [self.odom_msg.pose.pose.orientation.w, # Math folks put the w first :(
+                        self.odom_msg.pose.pose.orientation.x,
+                        self.odom_msg.pose.pose.orientation.y,
+                        self.odom_msg.pose.pose.orientation.z]
             twist_vec = [self.odom_msg.twist.twist.linear.x,
-                     self.odom_msg.twist.twist.linear.y,
-                     self.odom_msg.twist.twist.linear.z]
+                         self.odom_msg.twist.twist.linear.y,
+                         self.odom_msg.twist.twist.linear.z]
             tf_twist_linear = point_rotation_by_quaternion(twist_vec, quat_vec)
-            # print(point_rotation_by_quaternion([1, 0, 0],[0.7071203316249954, 0.0, 0.7071203316249954, 0.0])
 
             twist_msg = Twist()
             twist_msg.linear.x = tf_twist_linear[0]
@@ -317,18 +320,18 @@ class ObstacleAvoidance():
             # Assume Robot and odom z frames match
             twist_msg.angular.z = self.odom_msg.twist.twist.angular.z
 
-            print(twist_msg)
+            # print(twist_msg)
 
             # # print(pcl_msg)
-            # twist_cmd, pPose_array, best_pose = self.path_planner.computeTwistCommand(
-            #     self.odom_msg.pose.pose, twist_msg,
-            #     self.goal_msg, pcl_msg, self.config)
-            #
-            # if self.visualize:
-            #     self.projections_pub.publish(pPose_array)# = rospy.Publisher("/projections", PoseArray, queue_size=10)
-            #     self.best_projection_pub.publish(best_pose)# = rospy.Publisher("/best_projection", Pose, queue_size=10)
-            # # self.projection_pub.publish(pPose)
-            # # self.twist_pub.publish(twist_cmd)
+            twist_cmd, pPose_array, best_pose = self.path_planner.computeTwistCommand(
+                self.odom_msg.pose.pose, twist_msg,
+                self.goal_msg, pcl_msg, self.config)
+
+            if self.visualize:
+                self.projections_pub.publish(pPose_array)# = rospy.Publisher("/projections", PoseArray, queue_size=10)
+                self.best_projection_pub.publish(best_pose)# = rospy.Publisher("/best_projection", Pose, queue_size=10)
+            # self.projection_pub.publish(pPose)
+            # self.twist_pub.publish(twist_cmd)
             self.update_rate.sleep()
 
 if __name__ == "__main__":
