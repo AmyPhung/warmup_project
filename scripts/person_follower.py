@@ -13,7 +13,7 @@ ROS Parameters:
 - debug = whether to display graphs & excess print statements
 """
 import rospy
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, PointStamped
 from sensor_msgs.msg import PointCloud2, LaserScan
 import laser_geometry.laser_geometry as lg
 import ros_numpy
@@ -54,6 +54,7 @@ class PersonFollower(object):
         self.kp1 = rospy.get_param('~kp1', 0.5)
         self.kp2 = rospy.get_param('~kp2', 1)
 
+        self.person_pub = rospy.Publisher("/person_position", PointStamped, queue_size=10)
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
         self.laser_sub = rospy.Subscriber("/scan", LaserScan, self.laserCB)
         self.laser_msg = LaserScan()
@@ -143,6 +144,14 @@ class PersonFollower(object):
                 twist_cmd.linear.x = target_distance * self.kp1
                 twist_cmd.angular.z = target_heading * self.kp2
                 self.twist_pub.publish(twist_cmd)
+
+                # Publish person position
+                person_point = PointStamped()
+                person_point.header.frame_id = "laser_link"
+                person_point.header.stamp = rospy.Time.now()
+                person_point.point.x = target_position[0]
+                person_point.point.y = target_position[1]
+                self.person_pub.publish(person_point)
 
             self.update_rate.sleep()
 

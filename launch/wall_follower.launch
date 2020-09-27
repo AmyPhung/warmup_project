@@ -4,7 +4,7 @@
     <param name="~frequency" value="30.0" />
     <param name="~frame_id" value="laser_link" />
     <param name="~scan_topic" value="scan" />
-    <param name="~publish_markers" value="true" />
+    <param name="~publish_markers" value="false" />
     <param name="~bearing_std_dev" value="1e-5" />
     <param name="~range_std_dev" value="0.012" />
     <param name="~least_sq_angle_thresh" value="0.0001" />
@@ -26,8 +26,9 @@
     args="-d $(find warmup_project)/rviz/wall_follower_config.rviz" />
 
   <!-- Dynamic Reconfigure -->
-  <node name = "rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui"
+  <!-- Uncomment and set debug param to true to tune values -->
+  <!-- <node name = "rqt_dashboard" pkg = "rqt_gui" type = "rqt_gui"
     respawn = "false" output = "screen"
-    args = "--perspective-file $(find warmup_project)/rqt_config/wall_follower.perspective"/>
+    args = "- -perspective-file $(find warmup_project)/rqt_config/wall_follower.perspective"/> -->
 
 </launch>

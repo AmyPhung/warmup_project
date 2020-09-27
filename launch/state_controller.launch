@@ -1,0 +1,24 @@
+<launch>
+  <group>
+    <remap from="cmd_vel" to="teleop/cmd_vel"/>
+    <node type="teleop.py" name="teleop" pkg="warmup_project"
+      output="screen"/>
+  </group>
+
+  <group>
+    <remap from="cmd_vel" to="wall_follower/cmd_vel"/>
+    <include file="$(find warmup_project)/launch/wall_follower.launch"/>
+  </group>
+
+  <group>
+    <remap from="cmd_vel" to="person_follower/cmd_vel"/>
+    <node type="person_follower.py" name="person_follower" pkg="warmup_project"
+      output="screen"/>
+  </group>
+
+  <node type="rviz_markers.py" name="rviz_markers" pkg="warmup_project"
+    output="screen"/>
+
+  <node type="state_controller.py" name="state_controller" pkg="warmup_project"
+    output="screen"/>
+</launch>
