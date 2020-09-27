@@ -6,6 +6,9 @@
   <maintainer email="aphung@olin.edu">Amy Phung</maintainer>
   <license>TODO</license>
 
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
+
   <buildtool_depend>catkin</buildtool_depend>
   <depend>geometry_msgs</depend>
   <depend>laser_geometry</depend>

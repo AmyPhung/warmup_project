@@ -8,11 +8,12 @@ Designed for and tested on an Xbox 360 controller
 ROS Parameters:
 - x_threshold = joystick deadzone for x
 - y_threshold = joystick deadzone for y
-- rate = node update rate 
+- rate = node update rate
 """
 import inputs
 import rospy
 from geometry_msgs.msg import Twist
+from warmup_project.msg import JoystickInput
 
 def rescale(in_min, in_max, out_min, out_max, in_val):
     scale = (float(in_val) - float(in_min)) / (float(in_max) - float(in_min))
@@ -30,6 +31,7 @@ class JoystickTeleop():
         self.y_thresh = rospy.get_param('~y_threshold', 6000)
 
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
+        self.button_pub = rospy.Publisher("/button_states", JoystickInput, queue_size=10)
 
         self.pads = inputs.devices.gamepads
         if len(self.pads) == 0:
@@ -39,6 +41,9 @@ class JoystickTeleop():
 
         self.curr_x_input = 0
         self.curr_y_input = 0
+        self.curr_dpad_y = 0
+        self.curr_btn_south = 0 # a button
+        self.curr_btn_east = 0 # b button
 
     def computeTwistCmd(self, x, y):
         """ Compute twist command based on current x and y joystick values
@@ -58,6 +63,26 @@ class JoystickTeleop():
 
         return output
 
+    def computeButtonState(self, dpad_y, btn_south, btn_east):
+        """ Create button state message based on raw joystick values
+
+        dpad_y: -1 if pressed up, 1 if pressed down
+        btn_south: The 'a' button, 1 if pressed
+        btn_east: The 'b' button, 1 if pressed
+
+        Returns a JoystickInput message
+        """
+        output = JoystickInput()
+        if dpad_y == -1:
+            output.dpad_up = True
+        elif dpad_y == 1:
+            output.dpad_down = True
+        if btn_south == 1:
+            output.a = True
+        if btn_east == 1:
+            output.b = True
+        return output
+
     def run(self):
         while not rospy.is_shutdown():
             events = inputs.get_gamepad()
@@ -68,9 +93,20 @@ class JoystickTeleop():
                     self.curr_y_input = event.state
                 elif event.code == 'ABS_X':
                     self.curr_x_input = event.state
+                elif event.code == 'ABS_HAT0Y':
+                    self.curr_dpad_y = event.state
+                elif event.code == 'BTN_SOUTH':
+                    self.curr_btn_south = event.state
+                elif event.code == 'BTN_EAST':
+                    self.curr_btn_east = event.state
 
             new_cmd = self.computeTwistCmd(self.curr_x_input, self.curr_y_input)
             self.twist_pub.publish(new_cmd)
+
+            new_btn_state = self.computeButtonState(self.curr_dpad_y,
+                                                    self.curr_btn_south,
+                                                    self.curr_btn_east)
+            self.button_pub.publish(new_btn_state)
 
             self.update_rate.sleep()
 

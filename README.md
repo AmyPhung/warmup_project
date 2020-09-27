@@ -54,3 +54,11 @@ What are the key takeaways from this assignment for future robotic programming p
 + Computes nearest cluster
 + Uses proportional control to control position and velocity when approaching person
 + attempted to use convex hull to compute area of object, but this implementation was brittle due to "lidar shadows"
+
+## Remarks
+How was your code structured? Make sure to include a sufficient detail about the object-oriented structure you used for your project.
+What if any challenges did you face along the way?
+What would you do to improve your project if you had more time?
+What are the key takeaways from this assignment for future robotic programming projects? For each takeaway, provide a sentence or two of elaboration.
+
++ namespaces are a mess
