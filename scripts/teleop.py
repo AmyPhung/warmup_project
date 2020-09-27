@@ -46,7 +46,8 @@ class JoystickTeleop():
                           "States: \n" + \
                           "- 0: Teleop \n" + \
                           "- 1: Wall Follow \n" + \
-                          "- 2: Person Follow")
+                          "- 2: Person Follow \n" + \
+                          "- 3: Avoid Obstacles")
 
         self.curr_x_input = 0
         self.curr_y_input = 0

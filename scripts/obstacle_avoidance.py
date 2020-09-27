@@ -42,16 +42,9 @@ def computeAngle(vec1, vec2):
     sign = np.sign(np.cross(unit_vec1, unit_vec2))
     return sign * angle
 
-def quaternion_mult(q,r):
-    return [r[0]*q[0]-r[1]*q[1]-r[2]*q[2]-r[3]*q[3],
-            r[0]*q[1]+r[1]*q[0]-r[2]*q[3]+r[3]*q[2],
-            r[0]*q[2]+r[1]*q[3]+r[2]*q[0]-r[3]*q[1],
-            r[0]*q[3]-r[1]*q[2]+r[2]*q[1]+r[3]*q[0]]
-
-def point_rotation_by_quaternion(point,q):
-    r = [0]+point
-    q_conj = [q[0],-1*q[1],-1*q[2],-1*q[3]]
-    return quaternion_mult(quaternion_mult(q,r),q_conj)[1:]
+def computeDistance(pt1, pt2):
+    dist = math.sqrt((pt1[0] - pt2[0])**2 + (pt1[1] - pt2[1])**2)
+    return dist
 
 class ObstacleAvoidance():
     def __init__(self):
@@ -116,6 +109,21 @@ class ObstacleAvoidance():
 
         return angle_offset
 
+    def computeLinearVelocity(self, pose, goal):
+        dist = computeDistance([goal.pose.position.x, goal.pose.position.y],
+                               [pose.position.x, pose.position.y])
+        if dist < 0.05: # If robot is within 5cm of goal, stop
+            return 0
+        # Make velocity command proportional to distance
+        vel_cmd = dist * self.lin_vel
+
+        # Cap veloctiy command
+        if vel_cmd > self.lin_vel:
+            return self.lin_vel
+        elif vel_cmd < 0:
+            return 0
+        return vel_cmd
+
     def computeTrajectoryAdjustment(self):
         # Only consider objects in a -60 to 60 degree cone
         # (60 deg = approx 1 rad)
@@ -155,8 +163,11 @@ class ObstacleAvoidance():
 
         obstacle_factor = self.computeTrajectoryAdjustment()
 
+        vel = self.computeLinearVelocity(self.odom_msg.pose.pose,
+                                         self.goal_msg)
+
         cmd = Twist()
-        cmd.linear.x = self.lin_vel
+        cmd.linear.x = vel
         cmd.angular.z = self.k1*heading_offset + self.k2*obstacle_factor
 
         return cmd
@@ -168,7 +179,6 @@ class ObstacleAvoidance():
                 continue
 
             cmd = self.computeTwistCmd()
-            print(cmd)
             self.twist_pub.publish(cmd)
             self.update_rate.sleep()
 

@@ -26,11 +26,14 @@ class StateController():
             Twist, self.wallFollowCB)
         self.person_follow_sub = rospy.Subscriber("/person_follower/cmd_vel",
             Twist, self.personFollowCB)
+        self.obstacle_avoidance_sub = rospy.Subscriber("/obstacle_avoidance/cmd_vel",
+            Twist, self.obstacleAvoidanceCB)
 
         self.button_msg = JoystickInput()
         self.teleop_msg = Twist()
         self.wall_follow_msg = Twist()
         self.person_follow_msg = Twist()
+        self.obstacle_avoidance_msg = Twist()
 
         self.twist_pub = rospy.Publisher("/cmd_vel", Twist, queue_size=10)
 
@@ -45,6 +48,9 @@ class StateController():
 
     def personFollowCB(self, msg):
         self.person_follow_msg = msg
+
+    def obstacleAvoidanceCB(self, msg):
+        self.obstacle_avoidance_msg = msg
 
     def buttonCB(self, msg):
         self.button_msg = msg
@@ -74,6 +80,8 @@ class StateController():
                     self.twist_pub.publish(self.wall_follow_msg)
                 elif self.curr_state == 2:
                     self.twist_pub.publish(self.person_follow_msg)
+                elif self.curr_state == 3:
+                    self.twist_pub.publish(self.obstacle_avoidance_msg)
                 else:
                     # Publish stopped message for safety if state is invalid
                     self.twist_pub.publish(Twist())
