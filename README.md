@@ -1,5 +1,8 @@
 # Warmup Project
-This is the repo for the 2020 CompRobo warmup project
+A Computational Introduction to Robotics, Olin College of Engineering, FA2020
+Amy Phung
+
+This repository contains code for introductory projects and simple demo behavior nodes for a two-wheeled mobile robot. Some demo behaviors incude a joystick-based teleop, a waypoint navigation node, a lidar-based wall follower, a person follower, and an obstacle detection and avoidance node. The state controller ties all of these components together and allows for seamless behavior switching.
 
 # Dependencies
 + https://github.com/kam3k/laser_line_extraction
