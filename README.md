@@ -42,16 +42,15 @@ What are the key takeaways from this assignment for future robotic programming p
 #### Usage
 + `roslaunch warmup_project wall_follower.launch`
 
-+ External package to compute line segments
-+ compute distance to nearest line segment
-+ drive towards nearest line segment
-+ compute heading difference between robot and line segment
-+ put into proportional loop
+My wall follower used the [laser_line_extraction package](https://github.com/kam3k/laser_line_extraction) to detect line segments in the lidar scans, which I then used to base my wall follower off of. The wall follower node computes the distance to the nearest detected line segment, then computes the heading difference between the robot and the segment. It then uses this difference as an input to a proportional control loop to adjust its heading, with the forward velocity command remaining constant. The constant was tuned using with ROS's dynamic reconfigure server.
 
-# TODO:
-- implement wall detection
-- writeup
-- Create visualizations and rosbag files for implementations
+![dynamic_reconfigure gui](screenshots/dynamic_reconfigure.png)
+
+Although there are tunable parameters for both the follow distance and kp2, neither of these parameters are used in the current implementation. With more time, these parameters could be used to help the neato follow the wall from a specified distance.
+
+Another improvement that could be made is with the handling of corners. The current implementation does technically navigate around corners, but since it "locks onto" the nearest line segment the response to new walls is significantly delayed. This could be fixed by giving a higher priority to walls that are in front of the neato instead of basing the chosen wall purely by distance.
+
+![wall follow demo corners](img/wall_follow5.gif)
 
 ## Person Follower
 ![person follow demo](img/person_follow.gif)
@@ -59,10 +58,9 @@ What are the key takeaways from this assignment for future robotic programming p
 #### Usage
 + `rosrun warmup_project person_follower.launch`
 
-+ Uses DBSCAN clustering to cluster 2D data from lidar
-+ Computes nearest cluster
-+ Uses proportional control to control position and velocity when approaching person
-+ attempted to use convex hull to compute area of object, but this implementation was brittle due to "lidar shadows"
+My person follower implementation works by clustering the lidar points, then driving towards the center of the nearest cluster. First, the lidar data is converted to a pointcloud using the [laser_geometry package](http://wiki.ros.org/laser_geometry), then is clustered using the [DBSCAN implementation in scipy](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). Once a list of clusters are computed, the distance between the robot and the center of each cluster is computed to find the closest object to follow, which it assumes is the person. A proportional control loop is used to control linear and angular velocity when approaching the target.
+
+Originally, I attempted to use the convex hull to compute the area of detected clusters to more rigorously distinguish between people and objects, but the implementation was ultimately more brittle than the current implementation due to "lidar shadows." When objects in front of the lidar obscured parts of the scan, large objects far away appeared to be 2 or 3 smaller "leg-sized" objects which threw off this implementation. With more time, the current implementation can be improved by specifically detecting two small clusters (which is what humans look like to robot lidars) instead of generally following the nearest large object.
 
 ## Obstacle Avoidance
 ![obstacle avoidance demo](img/obstacle_avoidance.gif)
@@ -131,10 +129,7 @@ This implementation could be improved by having a more elegant solution for addi
 For a more extended demo of the full system, check out this video here:
 https://youtu.be/hElzsvBRAto
 
-## Remarks
-How was your code structured? Make sure to include a sufficient detail about the object-oriented structure you used for your project.
-What if any challenges did you face along the way?
-What would you do to improve your project if you had more time?
-What are the key takeaways from this assignment for future robotic programming projects? For each takeaway, provide a sentence or two of elaboration.
+## Final Remarks
+For each behavior, I wrote a separate node that has its own class and script. Each node had a  `run()` function, which handled all of the computing that needed to take place during each iteration and contained the main `while not rospy.is_shutdown()` loop. Callback functions were kept as brief as possible, typically only updating class attributes with new messages to prevent delays since these callbacks were called much more frequently than the main loop. ROS parameters were also used to allow for external adjustment by launch files as necessary.
 
-+ namespaces are a mess
+The biggest takeaways from this project for me were in learning how to use the dynamic reconfigure server, realizing that using global namespaces everywhere isn't a good idea, and adding headers to messages is a good idea. While the dynamic reconfigure server did take a bit of time to set up, it was handy to be able to adjust parameters live instead of needing to re-run launch scripts over and over again, especially since some nodes took a bit of time to start up. The global namespaces became an issue when I went to implement the state controller - since I had used global namespaces in all of my nodes, I couldn't just apply a namespace to the nodes in the launch file to distinguish between the different `/cmd_vel` topics and needed to resort to something a bit more janky (making groups for each node then remapping it manually). For a lot of intermediate topics I created, I made headerless messages, which made it difficult to keep track what frame the points they measured were in and led to some difficult-to-debug errors. This ended up being a major time sink when trying to implement the dynamic window approach for the obstacle avoidance that could've been avoided. Although tedious to fix in this project, these takeaways are definitely things I'll consider when writing code for the upcoming projects.
