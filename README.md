@@ -123,6 +123,7 @@ bool dpad_up
 bool dpad_down
 ```
 Since these controls are less intuitive than simply using the left joystick to drive the robot around, I added instructions to the teleop that prints on when the node starts up.
+
 ![teleop instructions](screenshots/teleop_prompt.png)
 
 Instead of starting up all of the individual behaviors separately (i.e. teleop, wall following, etc.) I started all of them in the `state_controller.launch` launch file. However, since all of the nodes are attempting to publish to `/cmd_vel`, all of the topics needed to be remapped, which is also handled in the launch file. Looking back, I realize I've been fairly sloppy with my handling of namespaces - in some places, I use global topic names, and in others I properly use namespaces. While it works for the time being, this would be suboptimal in a larger project, and it's definitely something I'll be more cognizant of going forward.
